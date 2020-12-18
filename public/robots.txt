@@ -1,3 +1,6 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Crawl-delay: 31536000
+
+User-agent: cia
+Disallow: /
