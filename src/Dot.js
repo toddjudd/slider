@@ -1,4 +1,4 @@
-import './Dot.css';
+import './Dot.less';
 
 const Dot = (props) => {
   let deathThreashold = 80;
