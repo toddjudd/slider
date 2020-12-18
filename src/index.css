@@ -15,7 +15,14 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
-
+.bars {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: stretch;
+  align-content: stretch;
+  justify-content: space-evenly;
+}
 .segment {
   display: grid;
   grid-template-columns: 1fr;

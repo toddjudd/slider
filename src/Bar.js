@@ -1,7 +1,7 @@
 function Bar(props) {
   let { startAisle, endAisle, pickCount } = props.bar;
   return (
-    <div className='Segment'>
+    <div className='segment' style={{ flex: pickCount }}>
       <div className='aisle-wrapper'>
         <div className='aisle start-aisle'>{startAisle}</div>
         <span></span>

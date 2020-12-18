@@ -80,11 +80,13 @@ const App = () => {
           e.preventDefault();
         }}
       />
-      {bars.length > 0
-        ? bars.map((bar, i) => {
-            return <Bar key={i} bar={bar}></Bar>;
-          })
-        : null}
+      <div className='bars'>
+        {bars.length > 0
+          ? bars.map((bar, i) => {
+              return <Bar key={i} bar={bar}></Bar>;
+            })
+          : null}
+      </div>
     </div>
   );
 };
