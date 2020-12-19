@@ -1,12 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import './index.css';
-import Dot from './Dot';
+import Slider from './Slider';
+import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Provider, atom } from 'jotai';
+
+const countAtom = atom(1);
 
 ReactDOM.render(
   <React.StrictMode>
-    <Dot />
+    <Provider>
+      <App countAtom={countAtom} />
+      <Slider countAtom={countAtom} />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
