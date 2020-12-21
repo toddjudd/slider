@@ -6,13 +6,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider, atom } from 'jotai';
 
-const countAtom = atom(1);
+const countAtom = atom(0);
+const maxCountAtom = atom(200);
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider>
-      <App countAtom={countAtom} />
-      <Slider countAtom={countAtom} />
+      <App atoms={{ countAtom, maxCountAtom }} />
+      <Slider atoms={{ countAtom, maxCountAtom }} />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

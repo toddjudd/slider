@@ -1,7 +1,10 @@
-import { atom, useAtom } from 'jotai';
+import { useAtom } from 'jotai';
 
 const App = (props) => {
-  const [count, setCount] = useAtom(props.countAtom);
+  const { countAtom, maxCountAtom } = props.atoms;
+  const [count, setCount] = useAtom(countAtom);
+  const [maxCount, setMaxCount] = useAtom(maxCountAtom);
+
   return (
     <>
       <h1>{count}</h1>
