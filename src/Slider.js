@@ -118,7 +118,7 @@ const Ledgend = (props) => {
 
 const Slider = (props) => {
   const [value, setValue] = useState(0);
-  const maxValue = 4;
+  const maxValue = 100;
   const [width, setWidth] = useState(0);
 
   return (
