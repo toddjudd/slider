@@ -1,0 +1,57 @@
+.Track {
+  background-color: #ddd;
+  border-radius: 10px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.Value {
+  display: flex;
+  align-items: center;
+  .value-box {
+    width: 21px;
+    height: 21px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin:2px;
+  }
+  span {
+    line-height: 21px;
+  }
+}
+
+.Dot {
+  color: #444;
+  background-color:#fff;
+  border: 2px solid #666;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 21px;
+  width: 21px;
+}
+.Dot > i {
+  line-height: 21px;
+}
+
+.Ledgend {  
+  height: 21px;
+  margin-top: 2px;
+  .tick-box {
+    width: 21px;
+    height: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+    margin:0 2px;
+  }
+  span {
+    line-height: 21px;
+  }
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import './index.css';
-import Slider from './Slider';
+import Slider from './Slide';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider, atom } from 'jotai';
@@ -11,10 +11,10 @@ const maxCountAtom = atom(200);
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider>
-      <App atoms={{ countAtom, maxCountAtom }} />
-      <Slider atoms={{ countAtom, maxCountAtom }} />
-    </Provider>
+    {/* <Provider> */}
+    {/* <App atoms={{ countAtom, maxCountAtom }} /> */}
+    <Slider atoms={{ countAtom, maxCountAtom }} />
+    {/* </Provider> */}
   </React.StrictMode>,
   document.getElementById('root')
 );

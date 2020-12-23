@@ -27,24 +27,6 @@ const Dot = forwardRef((props, ref) => {
   );
 });
 
-// const DotValue = forwardRef((props, ref) => {
-//   let { count, percentage } = props;
-//   let countDeadly = percentage > 80;
-//   let color = countDeadly ? '#444' : mix('FF333A', '8AC926', percentage);
-//   return (
-//     <>
-//       <div className='Dot' {...props} ref={ref}>
-//         <span>{count}</span>
-//         <i
-//           className={countDeadly ? 'fas fa-skull' : 'fas fa-arrows-h'}
-//           style={{
-//             color,
-//           }}></i>
-//       </div>
-//     </>
-//   );
-// });
-
 const Slider = (props) => {
   const dotRef = useRef();
   const sliderRef = useRef();
