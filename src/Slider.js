@@ -1,117 +1,141 @@
-import { atom, useAtom } from 'jotai';
+import { forwardRef, useEffect, useRef, useState } from 'react';
+import './Slide.less';
 import mix from './mix';
-import './Slider.less';
-import './Dot.less';
-import { forwardRef, useEffect, useRef } from 'react';
-
-const getCount = (percentage, max) => (max / 100) * percentage;
-
-const diffAtom = atom(0);
-const widthAtom = atom(0);
 
 const Dot = forwardRef((props, ref) => {
-  let { count, percentage } = props;
-  let countDeadly = percentage > 80;
-  let color = countDeadly ? '#444' : mix('FF333A', '8AC926', percentage);
   return (
-    <>
-      <div className='Dot' {...props} ref={ref}>
-        <span>{count}</span>
-        <i
-          className={countDeadly ? 'fas fa-skull' : 'fas fa-arrows-h'}
-          style={{
-            color,
-          }}></i>
-      </div>
-    </>
+    <div className='Dot' ref={ref} {...props}>
+      <i className={props.deadly ? 'fas fa-skull' : 'fas fa-arrows-h'}></i>
+    </div>
   );
 });
 
-const Slider = (props) => {
+const Value = (props) => {
+  const { width, value, maxValue } = props;
+  return (
+    <div className='Value'>
+      <div
+        className='value-box'
+        style={{ left: `${(value / maxValue) * width}px` }}>
+        <span>{props.value}</span>
+      </div>
+    </div>
+  );
+};
+
+const Track = (props) => {
+  const { width, setWidth, value, setValue, maxValue } = props;
+  const trackRef = useRef();
   const dotRef = useRef();
-  const sliderRef = useRef();
 
-  const { countAtom, maxCountAtom } = props.atoms;
-  const [count, setCount] = useAtom(countAtom);
-  const [maxCount] = useAtom(maxCountAtom);
-  const [width, setWidth] = useAtom(widthAtom);
-
-  // const [position, setPosition] = useAtom(positionAtom);
-  // const [percentage, setPercentage] = useAtom(percentageAtom);
-  const [diff, setDiff] = useAtom(diffAtom);
+  //is this needed?
+  useEffect(() => {
+    setWidth(trackRef.current.offsetWidth - dotRef.current.offsetWidth);
+  }, [trackRef, dotRef, setWidth]);
 
   const handleMouseDown = (e) => {
-    //diff between mouse click and dot left edge. Where did you click on the box?
+    //ignore right click
+    if (e.which === 3 || e.button === 2) return;
+    //remove text selection
     e.preventDefault();
-    setDiff(e.clientX - dotRef.current.getBoundingClientRect().left);
-    console.log(diff);
+
+    console.log('Clicking Track');
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
-  };
+    handleMouseMove(e);
+    //where did the user click on the dot?
+    //distance between:
+    //left edge and mouse
 
-  const handleMouseUp = (e) => {
-    document.removeEventListener('mouseup', handleMouseUp);
-    document.removeEventListener('mousemove', handleMouseMove);
+    //Right edge and mouse
+
+    //Center of Dot and mouse
   };
 
   const handleMouseMove = (e) => {
-    let newX =
-      e.clientX - diff - sliderRef.current.getBoundingClientRect().left;
-
-    const end = sliderRef.current.offsetWidth - dotRef.current.offsetWidth;
-    console.log(sliderRef.current.offsetWidth);
-    console.log(dotRef.current.offsetWidth);
-
-    const start = 0;
-
-    if (newX < start) {
-      newX = 0;
+    console.log('Moving Mouse');
+    //compare to track
+    //track offset = distance from left edge
+    const trackOffest = trackRef.current.getBoundingClientRect().left;
+    //track width = track width
+    const trackWidth = trackRef.current.offsetWidth;
+    //clientx - track offest = pixles between mouse and left edge
+    let mouseTrackDif = e.clientX - trackOffest;
+    //limit mouse track dif to left/right edge of track
+    if (mouseTrackDif < 0) {
+      mouseTrackDif = 0;
+    } else if (mouseTrackDif > trackWidth) {
+      mouseTrackDif = trackWidth;
     }
-
-    if (newX > end) {
-      newX = end;
-    }
-
-    console.log(`newX ${newX}`);
-    console.log(`end ${end}`);
-    // setPercentage((newX / end) * 100);
-    setCount(Math.floor(getCount((newX / end) * 100, maxCount)));
-    // setPosition(newX);
+    //(clientx - track offest)/track width = percent of track used
+    const percentTrackUsed = mouseTrackDif / trackWidth;
+    //percent of trac used * maxValue = value
+    setValue(Math.floor(percentTrackUsed * maxValue));
   };
 
-  useEffect(() => {
-    setWidth(sliderRef.current.offsetWidth - dotRef.current.offsetWidth);
-  }, [sliderRef, dotRef, setWidth]);
+  const handleMouseUp = (e) => {
+    console.log('Releasing Track');
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
+  };
 
+  let deadly = (value / maxValue) * 100 > 80;
+  return (
+    <div className='Track' ref={trackRef} onMouseDown={handleMouseDown}>
+      <Dot
+        ref={dotRef}
+        style={{
+          left: `${(value / maxValue) * width}px`,
+          color: `${
+            deadly ? '#444' : mix('FF333A', '8AC926', (value / maxValue) * 100)
+          }`,
+        }}
+        deadly={deadly}></Dot>
+    </div>
+  );
+};
+
+const Ledgend = (props) => {
+  const { width, maxValue } = props;
   let ticks = [];
   for (let i = 0; i < 4; i++) {
-    let fifth = Math.floor((i + 1) * 0.2 * maxCount);
+    let fifth = Math.floor((i + 1) * 0.2 * maxValue);
+    //this next bit is bad..
+    //It calculates the right movement needed to offest for the stacking of the fifth elements
+    let right = 0;
+    // let right = i * 21;
     ticks.push(
       <div
-        key={i}
+        className='tick-box'
         style={{
-          left: `${(fifth / maxCount) * width + 13}px`,
-          position: 'absolute',
-          display: 'inline',
+          // left: `${(fifth / maxValue) * width}px`,
+          left: `${(fifth / maxValue) * width - right}px`,
         }}>
-        {fifth}
+        {/* <i className='fas fa-horizontal-rule'></i> */}
+        <span key={i}>{fifth}</span>
       </div>
     );
   }
+  console.log(ticks);
+  return (
+    <div className='Ledgend'>
+      {ticks.map((tick) => {
+        return tick;
+      })}
+    </div>
+  );
+};
+
+const Slider = (props) => {
+  const [value, setValue] = useState(0);
+  const maxValue = 100;
+  const [width, setWidth] = useState(0);
 
   return (
-    <div className='wrapper '>
-      <div className='endCap first'></div>
-      <div className='Slider' ref={sliderRef}>
-        <Dot
-          count={count}
-          ref={dotRef}
-          percentage={(count / maxCount) * 100}
-          onMouseDown={handleMouseDown}
-          style={{ left: `${(count / maxCount) * width}px` }}></Dot>
-      </div>
-      <div className='endCap last'></div>
-      {/* {ticks.map((tick) => tick)} */}
+    <div className='Slider'>
+      <Value {...{ width, setWidth, value, setValue, maxValue }}></Value>
+      <Track {...{ width, setWidth, value, setValue, maxValue }}></Track>
+      <Ledgend {...{ width, maxValue }}></Ledgend>
     </div>
   );
 };

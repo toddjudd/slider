@@ -1,46 +1,57 @@
-.wrapper {
-  display: flex;
-}
-
-.Slider {
+.Track {
   background-color: #ddd;
+  border-radius: 10px;
   height: 20px;
-  width: 500px;
   display: flex;
   align-items: center;
-  border-radius: 10px;
-  // margin: 18px 0 2px 0;
 }
 
-.endCap {
-  width: 15px;
-  height: 15px;
-  background-color: white;
-  border: 2px solid #444;
-  border-radius: 100%;
+.Value {
+  display: flex;
+  align-items: center;
+  .value-box {
+    width: 21px;
+    height: 21px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin:2px;
+  }
+  span {
+    line-height: 21px;
+  }
 }
 
-.first {
-  transform: translateX(15px);
-}
-.last {
-  transform: translateX(-15px);
-}
 .Dot {
-  height: 21px;
-  width: 21px;
+  color: #444;
+  background-color:#fff;
   border: 2px solid #666;
   border-radius: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   align-items: center;
-  background-color:#fff;
+  justify-content: center;
   position: relative;
-  color: #444;
-  z-index: 1;
+  height: 21px;
+  width: 21px;
 }
 .Dot > i {
-  margin-top: 1px;
   line-height: 21px;
+}
+
+.Ledgend {  
+  height: 21px;
+  margin-top: 2px;
+  .tick-box {
+    width: 21px;
+    height: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+    margin:0 2px;
+  }
+  span {
+    line-height: 21px;
+  }
 }
