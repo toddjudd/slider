@@ -1,5 +1,5 @@
 import { forwardRef, useEffect, useRef, useState } from 'react';
-import './Slide.less';
+import './Slider.less';
 import mix from './mix';
 
 const Dot = forwardRef((props, ref) => {
@@ -43,13 +43,6 @@ const Track = (props) => {
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
     handleMouseMove(e);
-    //where did the user click on the dot?
-    //distance between:
-    //left edge and mouse
-
-    //Right edge and mouse
-
-    //Center of Dot and mouse
   };
 
   const handleMouseMove = (e) => {

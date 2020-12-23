@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import './index.css';
-import Slider from './Slide';
-import App from './App';
+import Slider from './Slider';
 import reportWebVitals from './reportWebVitals';
 import { Provider, atom } from 'jotai';
 
