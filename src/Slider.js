@@ -94,20 +94,17 @@ const Ledgend = (props) => {
   for (let i = 0; i < 4; i++) {
     let fifth = Math.floor((i + 1) * 0.2 * maxValue);
     //this next bit is bad..
-    //It calculates the right movement needed to offest for the stacking of the fifth elements
-    let right = 0;
-    // let right = i * 21;
-    ticks.push(
-      <div
-        className='tick-box'
-        style={{
-          // left: `${(fifth / maxValue) * width}px`,
-          left: `${(fifth / maxValue) * width - right}px`,
-        }}>
-        {/* <i className='fas fa-horizontal-rule'></i> */}
-        <span key={i}>{fifth}</span>
-      </div>
-    );
+    if (fifth > 0) {
+      ticks.push(
+        <div
+          className='tick-box'
+          style={{
+            left: `${(fifth / maxValue) * width}px`,
+          }}>
+          <span key={i}>{fifth}</span>
+        </div>
+      );
+    }
   }
   console.log(ticks);
   return (
@@ -121,7 +118,7 @@ const Ledgend = (props) => {
 
 const Slider = (props) => {
   const [value, setValue] = useState(0);
-  const maxValue = 100;
+  const maxValue = 4;
   const [width, setWidth] = useState(0);
 
   return (

@@ -2,17 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Slider from './Slider';
 import reportWebVitals from './reportWebVitals';
-import { Provider, atom } from 'jotai';
-
-const countAtom = atom(0);
-const maxCountAtom = atom(200);
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <Provider> */}
-    {/* <App atoms={{ countAtom, maxCountAtom }} /> */}
-    <Slider atoms={{ countAtom, maxCountAtom }} />
-    {/* </Provider> */}
+    <Slider />
   </React.StrictMode>,
   document.getElementById('root')
 );
