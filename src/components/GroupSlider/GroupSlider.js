@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Bar from './Bar';
 
+import './GroupSlider.less';
+
 const App = () => {
   const [chunk, setChunk] = useState(5);
   console.log(chunk);

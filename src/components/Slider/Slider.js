@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import './Slider.less';
-import mix from './mix';
+import mix from '../../lib/mix';
 
 const Dot = forwardRef((props, ref) => {
   return (
