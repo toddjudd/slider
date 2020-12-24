@@ -75,6 +75,9 @@ const Track = (props) => {
   let deadly = (value / maxValue) * 100 > 80;
   return (
     <div className='Track' ref={trackRef} onMouseDown={handleMouseDown}>
+      <div className='min endcap'>
+        <span>0</span>
+      </div>
       <Dot
         ref={dotRef}
         style={{
@@ -84,6 +87,9 @@ const Track = (props) => {
           }`,
         }}
         deadly={deadly}></Dot>
+      <div className='max endcap'>
+        <span>{maxValue}</span>
+      </div>
     </div>
   );
 };
