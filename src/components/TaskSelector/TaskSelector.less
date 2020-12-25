@@ -1,0 +1,50 @@
+.TaskSelector {
+  display: grid;
+  user-select: none;
+  //00% of screen
+  //so the width of the slider never changes
+  grid-template-columns: 60% 1fr 2fr 2fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+    'title . . .'
+    'slider selectAll assignee submit';
+  //could add media query for
+  // border: #444 solid 2px;
+  box-shadow: -2px 2px 6px #999;
+  border-radius: 8px;
+  background-color: white;
+  padding: 12px;
+  //temp!
+  margin: 12px;
+  .Slider {
+    grid-area: slider;
+  }
+  .carrierTitle {
+    grid-area: title;
+    font-size: 1.2em;
+    color: #444;
+  }
+  .AllSelector {
+    grid-area: selectAll;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    span {
+      font-size: 0.7em;
+      white-space: nowrap;
+    }
+  }
+  .AssigneeSelector {
+    grid-area: assignee;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+  .ConfirmAssignee {
+    grid-area: submit;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+}

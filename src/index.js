@@ -1,10 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Slider from './components/Slider/Slider';
+import TaskSelector from './components/TaskSelector/TaskSelector';
+import data from './data';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Slider />
+    {data.map((data, i) => (
+      <TaskSelector
+        key={i}
+        carrierTitle={data.carrierTitle}
+        maxValue={data.count}></TaskSelector>
+    ))}
   </React.StrictMode>,
   document.getElementById('root')
 );

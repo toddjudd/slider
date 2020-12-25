@@ -30,7 +30,11 @@ const Track = (props) => {
 
   //is this needed?
   useEffect(() => {
+    const handleResize = () => {
+      setWidth(trackRef.current.offsetWidth - dotRef.current.offsetWidth);
+    };
     setWidth(trackRef.current.offsetWidth - dotRef.current.offsetWidth);
+    window.addEventListener('resize', handleResize);
   }, [trackRef, dotRef, setWidth]);
 
   const handleMouseDown = (e) => {
@@ -123,8 +127,7 @@ const Ledgend = (props) => {
 };
 
 const Slider = (props) => {
-  const [value, setValue] = useState(0);
-  const maxValue = 100;
+  const { value, setValue, maxValue, minValue } = props;
   const [width, setWidth] = useState(0);
 
   return (
