@@ -1,20 +1,11 @@
-import { useState, forwardRef } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const AssigneeSelector = forwardRef((props, ref) => {
-  const assignees = [
-    'Todd J.',
-    'Alex J.',
-    'Keith S.',
-    'Taylor E.',
-    'Spencer D.',
-  ];
-  const [currentAssignee, setCurrentAssignee] = useState(assignees[0]);
-  // const { currentAssignee, setCurrentAssignee, assignees } = props;
+const AssigneeSelector = (props) => {
+  const { currentAssignee, setCurrentAssignee, assignees } = props;
 
   return (
-    <div className='AssigneeSelector' ref={ref}>
+    <div className='AssigneeSelector'>
       <Dropdown>
         <Dropdown.Toggle>{currentAssignee}</Dropdown.Toggle>
         <Dropdown.Menu>
@@ -30,6 +21,6 @@ const AssigneeSelector = forwardRef((props, ref) => {
       </Dropdown>
     </div>
   );
-});
+};
 
 export default AssigneeSelector;

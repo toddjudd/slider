@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Slider from '../Slider/Slider';
 import AllSelector from '../AllSelector/AllSelector';
 import AssigneeSelector from '../AssigneeSelector/AssigneeSelector';
@@ -6,11 +6,13 @@ import Button from 'react-bootstrap/Button';
 
 import './TaskSelector.less';
 
+const assignees = ['Todd J.', 'Alex J.', 'Keith S.', 'Taylor E.', 'Spencer D.'];
+
 const TaskSelector = (props) => {
   const [value, setValue] = useState(0);
+  const [currentAssignee, setCurrentAssignee] = useState(assignees[0]);
   const { maxValue, carrierTitle } = props;
   const minValue = 0;
-  const AssigneeSelectorRef = useRef();
 
   const handleSubmit = (e) => {
     console.log({
@@ -18,7 +20,7 @@ const TaskSelector = (props) => {
       e,
       props,
       value,
-      assignee: AssigneeSelectorRef,
+      assignee: currentAssignee,
     });
   };
   return (
@@ -26,7 +28,12 @@ const TaskSelector = (props) => {
       <span className='carrierTitle'>{carrierTitle}</span>
       <Slider {...{ value, setValue, maxValue, minValue }}></Slider>
       <AllSelector {...{ value, setValue, minValue, maxValue }}></AllSelector>
-      <AssigneeSelector ref={AssigneeSelectorRef}></AssigneeSelector>
+      <AssigneeSelector
+        {...{
+          currentAssignee,
+          setCurrentAssignee,
+          assignees,
+        }}></AssigneeSelector>
       <div className='ConfirmAssignee'>
         <Button variant='success' onClick={handleSubmit}>
           Submit

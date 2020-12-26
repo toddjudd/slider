@@ -4,7 +4,7 @@ import mix from '../../lib/mix';
 
 const Dot = forwardRef((props, ref) => {
   return (
-    <div className='Dot' ref={ref} {...props}>
+    <div className='Dot' ref={ref} {...{ style: props.style }}>
       <i className={props.deadly ? 'fas fa-skull' : 'fas fa-arrows-h'}></i>
     </div>
   );
@@ -50,7 +50,6 @@ const Track = (props) => {
   };
 
   const handleMouseMove = (e) => {
-    console.log('Moving Mouse');
     //compare to track
     //track offset = distance from left edge
     const trackOffest = trackRef.current.getBoundingClientRect().left;
@@ -107,6 +106,7 @@ const Ledgend = (props) => {
     if (fifth > 0) {
       ticks.push(
         <div
+          key={i}
           className='tick-box'
           style={{
             left: `${(fifth / maxValue) * width}px`,
@@ -116,7 +116,6 @@ const Ledgend = (props) => {
       );
     }
   }
-  console.log(ticks);
   return (
     <div className='Ledgend'>
       {ticks.map((tick) => {
@@ -127,7 +126,7 @@ const Ledgend = (props) => {
 };
 
 const Slider = (props) => {
-  const { value, setValue, maxValue, minValue } = props;
+  const { value, setValue, maxValue } = props;
   const [width, setWidth] = useState(0);
 
   return (
