@@ -35,6 +35,9 @@ const Track = (props) => {
     };
     setWidth(trackRef.current.offsetWidth - dotRef.current.offsetWidth);
     window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [trackRef, dotRef, setWidth]);
 
   const handleMouseDown = (e) => {
