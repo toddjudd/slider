@@ -4,6 +4,7 @@ import './index.less';
 // import TaskSelector from './components/TaskSelector/TaskSelector';
 // import data from './data';
 import App from './App';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
   <React.StrictMode>

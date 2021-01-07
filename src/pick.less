@@ -1,0 +1,60 @@
+.Pick {
+  background-color: white;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-areas:
+    'action action'
+    'material detail'
+    'form detail'
+    'form .';
+  border-radius: 12px;
+
+  margin: 8px;
+  padding: 12px;
+  border: 1px solid #ccc;
+}
+
+.PickActions {
+  grid-area: action;
+  display: flex;
+  flex-direction: row-reverse;
+}
+.Material {
+  grid-area: material;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 4px 4px #eee;
+  margin: 6px;
+  padding: 6px;
+  .badge {
+    margin-left: 8px;
+  }
+}
+.PickForm {
+  grid-area: form;
+  margin: 12px;
+  button[type='submit'] {
+    float: right;
+  }
+}
+.PickDetails {
+  grid-area: detail;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 4px 4px #eee;
+  margin: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-around;
+  .title {
+    font-weight: bold;
+    margin-left: 16px;
+  }
+  .horizontal-offset {
+    background-color: #ccc;
+    height: 1px;
+    align-self: stretch;
+    margin: 0 12px;
+  }
+}
