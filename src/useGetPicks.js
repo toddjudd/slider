@@ -14,7 +14,7 @@ const useGetPicks = () => {
     return () => {
       current = false;
     };
-  }, [pick.taskId]); //this is a weird depencancy?
+  }, [pick.taskId, dispatch]); //this is a weird depencancy?
   // likely it would be the 'selected task id of some parent?
 };
 
