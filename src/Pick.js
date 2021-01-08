@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+//package import
+// import { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faBoxCheck } from '@fortawesome/pro-regular-svg-icons';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import {
   Button,
   InputGroup,
@@ -11,27 +11,28 @@ import {
   Table,
 } from 'react-bootstrap';
 
-import './pick.less';
+import { capitalize, trueIfNull } from './util';
+//effects
 import { usePickState } from './pick-state';
 import useGetPicks from './useGetPicks';
+//components
 import LocationModal from './LocationModal';
-import { capitalize, trueIfNull } from './util';
 import PickMaterial from './PickMaterial';
 import PickDetails from './PickDetails';
-
-//License Plate Selector.js
+import PickNav from './PickNav';
+//css import
+import './pick.less';
 
 //pick.js
-let taskState = null;
+// let taskState = null;
 const Pick = () => {
   const [pick, dispatch] = usePickState();
 
-  useEffect(() => {
-    taskState = pick;
-  });
+  // useEffect(() => {
+  // taskState = pick;
+  // });
 
-  useGetPicks(); //this is a weird depencancy?
-  // likely it would be the 'selected task id of some parent?
+  useGetPicks();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -63,11 +64,7 @@ const Pick = () => {
 
   return (
     <div className='Pick'>
-      <div className='PickActions'>
-        <Button variant='outline-danger'>
-          <FontAwesomeIcon icon={faExclamationCircle} /> Reject Task
-        </Button>
-      </div>
+      <PickNav />
       <PickMaterial pick={pick} />
       <div className='PickForm'>
         <Form
