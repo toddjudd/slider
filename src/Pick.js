@@ -1,122 +1,42 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faSearch,
-  faHandPointUp,
-  faBoxCheck,
-} from '@fortawesome/pro-regular-svg-icons';
+import { faSearch, faBoxCheck } from '@fortawesome/pro-regular-svg-icons';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
 import {
   Button,
   InputGroup,
   FormControl,
   Form,
-  Badge,
-  OverlayTrigger,
-  Popover,
   Modal,
   Table,
 } from 'react-bootstrap';
+
 import './pick.less';
-//utils.js
-const loadPickDetails = () => {
-  //use taskid in get request
-  return axios.get('http://localhost:7900/picks').catch((err) => {
-    console.log(err);
-  });
-};
+import { usePickState } from './pick-state';
+import useGetPicks from './useGetPicks';
+import LocationModal from './LocationModal';
+import { capitalize, trueIfNull } from './util';
+import PickMaterial from './PickMaterial';
+import PickDetails from './PickDetails';
 
-//utils.js
-const capitalize = (s) => {
-  if (typeof s !== 'string') return '';
-  return s.charAt(0).toUpperCase() + s.slice(1);
-};
-
-//material-popover.js
-const popright = (props) => (
-  <Popover id='popover-basic' placement='right'>
-    <Popover.Title as='h3'>{props.title}</Popover.Title>
-    <Popover.Content>{props.content}</Popover.Content>
-  </Popover>
-);
+//License Plate Selector.js
 
 //pick.js
 let taskState = null;
 const Pick = () => {
-  const [formState, setFormState] = useState({
-    from: null,
-    quantity: null,
-    sourceLp: null,
-    sourceLpSearch: false,
-    sourceLoc: null,
-    sourceLocSearch: false,
-    submitting: false,
-  });
-
-  const [pick, dispatch] = useReducer(
-    (state, action) => {
-      switch (action.type) {
-        case 'LOAD_TASK':
-          return {
-            ...state,
-            ...action.task,
-            actualQuantity: action.task.expectedQuantity,
-            actualSourceLocation: action.task.expectedSourceLocation,
-          };
-        case 'FORM_CHANGE':
-          return { ...state, ...action.change };
-        default: {
-        }
-      }
-    },
-    taskState || {
-      taskId: null,
-      materialLookup: null,
-      materialDescription: null,
-      expectedQuantity: null,
-      actualQuantity: null,
-      expectedSourceLocation: null,
-      actualSourceLocation: null,
-      actualSourceLicensePlate: null,
-      project: null,
-      owner: null,
-      waveId: null,
-      shippingContainerId: null,
-      shipmentId: null,
-      orderId: null,
-      pickslipId: null,
-      created: null,
-    }
-  );
+  const [pick, dispatch] = usePickState();
 
   useEffect(() => {
     taskState = pick;
   });
 
-  useEffect(() => {
-    let current = true;
-    loadPickDetails(pick.taskId).then(({ data: task }) => {
-      if (current) {
-        dispatch({ type: 'LOAD_TASK', task });
-      }
-    });
-    return () => {
-      current = false;
-    };
-  }, [pick.taskId]); //this is a weird depencancy?
+  useGetPicks(); //this is a weird depencancy?
   // likely it would be the 'selected task id of some parent?
 
   const handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
-
-    const form = e.currentTarget;
-    if (!/^\d+$/.test(form['quantity'].value)) {
-      setFormState({ ...formState, form: false, quantity: true });
-      return;
-    }
-    setFormState({ ...formState, form: true, submitting: true });
+    dispatch({ type: 'FORM_SUBMIT', form: e.currentTarget });
   };
 
   const handleChange = (e, change) => {
@@ -124,29 +44,22 @@ const Pick = () => {
       type: 'FORM_CHANGE',
       change: { [change]: e.target.value },
     });
-  };
+  }; //this might be able to be used for the handle location selection?
 
-  const handleLocationSelection = (e, actualSourceLocation) => {
+  const handleLPSelection = (e, actualSourceLP) => {
+    // validateLp(actualSourceLP);
+    // need to make sure validation of the lp takes place on form change
+    //should validation happen only once??
     dispatch({
       type: 'FORM_CHANGE',
-      change: { actualSourceLocation },
+      change: { actualSourceLP, showLpSearch: false },
     });
-    setFormState({ ...formState, sourceLocSearch: false });
   };
 
-  const handleLPSelection = (e, actualSourceLicensePlate) => {
-    dispatch({
-      type: 'FORM_CHANGE',
-      change: { actualSourceLicensePlate },
-    });
-    setFormState({ ...formState, sourceLpSearch: false });
-    validateLp(actualSourceLicensePlate);
-  };
-
-  const validateLp = (lp) => {
-    //do something then set formState validation
-    return setFormState({ ...formState, sourceLp: /^LP.+/.test(lp) });
-  };
+  // const validateLp = (lp) => {
+  //   //do something then set formState validation
+  //   return setFormState({ ...formState, sourceLp: /^LP.+/.test(lp) });
+  // };
 
   return (
     <div className='Pick'>
@@ -155,36 +68,11 @@ const Pick = () => {
           <FontAwesomeIcon icon={faExclamationCircle} /> Reject Task
         </Button>
       </div>
-      <div className='Material'>
-        <h1 className='material-label'>
-          Material:
-          <OverlayTrigger
-            trigger={['hover', 'focus']}
-            overlay={popright({
-              title: 'Descrtiption',
-              content: pick.materialDescription,
-            })}
-            placement='right'>
-            <Badge
-              variant='primary'
-              className='material-detail'
-              delay={{ show: 250, hide: 300 }}>
-              {pick.materialLookup}
-            </Badge>
-          </OverlayTrigger>
-        </h1>
-        <h3 className='pick-quantity-label'>
-          Quantity:{' '}
-          <span className='pick-quantity-detail'>{pick.expectedQuantity}</span>
-          <Badge className='pick-unitOfMeasure-detail'>
-            {capitalize(pick.uom)}
-          </Badge>
-        </h3>
-      </div>
+      <PickMaterial pick={pick} />
       <div className='PickForm'>
         <Form
           noValidate
-          validated={formState.form}
+          validated={pick.fromIsValid}
           onSubmit={handleSubmit}
           autoComplete='off'>
           <Form.Group>
@@ -196,7 +84,7 @@ const Pick = () => {
                 id='sourceLoc'
                 placeholder='Source Loc'
                 aria-label='Source Location'
-                isInvalid={formState.sourceLoc}
+                isInvalid={trueIfNull(pick.actualSourceLocationisValid)}
                 value={pick.actualSourceLocation}
                 onChange={(e) => {
                   handleChange(e, 'actualSourceLocation');
@@ -206,9 +94,8 @@ const Pick = () => {
                 <Button
                   variant='primary'
                   onClick={(e) => {
-                    return setFormState({
-                      ...formState,
-                      sourceLocSearch: true,
+                    return dispatch({
+                      type: 'SHOW_LOC_MODAL',
                     });
                   }}>
                   <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
@@ -228,21 +115,20 @@ const Pick = () => {
                 id='sourceLP'
                 placeholder='Source LP'
                 aria-label='Source License Plate'
-                isInvalid={
-                  formState.sourceLp === null ? false : !formState.sourceLp
-                }
-                isValid={formState.sourceLp}
-                value={pick.actualSourceLicensePlate}
+                isInvalid={trueIfNull(pick.actualSourceLPIsValid)}
+                isValid={pick.actualSourceLPIsValid}
+                value={pick.actualSourceLP}
                 onChange={(e) => {
-                  handleChange(e, 'actualSourceLicensePlate');
-                  validateLp(e.target.value);
+                  handleChange(e, 'actualSourceLP');
                 }}
               />
               <InputGroup.Append>
                 <Button
                   variant='primary'
                   onClick={(e) => {
-                    return setFormState({ ...formState, sourceLpSearch: true });
+                    return dispatch({
+                      type: 'SHOW_LP_MODAL',
+                    });
                   }}>
                   <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
                 </Button>
@@ -259,7 +145,7 @@ const Pick = () => {
                 type='number'
                 name='quantity'
                 placeholder='quantity'
-                isInvalid={formState.quantity}
+                isInvalid={trueIfNull(pick.actualQuantityIsValid)}
                 value={pick.actualQuantity}
                 onChange={(e) => {
                   handleChange(e, 'actualQuantity');
@@ -272,122 +158,19 @@ const Pick = () => {
           </Form.Group>
           <Button
             type='submit'
-            variant={formState.submitting ? 'secondary' : 'success'}
-            disabled={formState.submitting}>
-            {formState.submitting ? 'Loading...' : 'Submit'}
+            variant={pick.submitting ? 'secondary' : 'success'}
+            disabled={pick.submitting}>
+            {pick.submitting ? 'Loading...' : 'Submit'}
           </Button>
         </Form>
       </div>
-      <div className='PickDetails'>
-        <div className='project'>
-          <span className='title'>Project:</span> {pick.project}
-        </div>
-        <div className='created'>
-          <span className='title'>Created:</span> {pick.created}
-        </div>
-        <div className='waveId'>
-          <span className='title'>Wave #:</span> {pick.waveId}
-        </div>
-        <div className='shipmentId'>
-          <span className='title'>Shipment #:</span> {pick.shipmentId}
-        </div>
-        <div className='horizontal-offset'></div>
-        <div className='expectedSourceLocation'>
-          <span className='title'>Location:</span> {pick.expectedSourceLocation}
-        </div>
-        <div className='horizontal-offset'></div>
-        <div className='pickslipId'>
-          <span className='title'>Pickslip #:</span> {pick.pickslipId}
-        </div>
-        <div className='orderId'>
-          <span className='title'>Order #:</span> {pick.orderId}
-        </div>
-      </div>
+      <PickDetails pick={pick} />
+      <LocationModal />
       <Modal
         size='lg'
-        show={formState.sourceLocSearch}
+        show={pick.showLpSearch}
         onHide={() => {
-          setFormState({ ...formState, sourceLocSearch: false });
-        }}
-        centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Search Avaliable Locations</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {/* data needs to be loaded */}
-          <Table striped bordered hover size='sm'>
-            <thead>
-              <tr>
-                <th>Location</th>
-                <th>Avaliable</th>
-                <th>Allocated</th>
-                <th>
-                  {/* <Button disabled variant='outline-secondary'>
-                    Select <FontAwesomeIcon icon={faHandPointUp} />
-                  </Button> */}
-                  Select
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>AH631303</td>
-                <td>106</td>
-                <td>106</td>
-                <td>
-                  <Button
-                    variant='outline-primary'
-                    onClick={(e) => {
-                      return handleLocationSelection(e, 'AH631303');
-                    }}>
-                    <FontAwesomeIcon icon={faBoxCheck} />
-                  </Button>
-                </td>
-              </tr>
-              <tr>
-                <td>AB654851</td>
-                <td>68</td>
-                <td
-                  //difference too great? set class to show red
-                  style={{ color: 'var(--red)' }}>
-                  68
-                </td>
-                <td>
-                  <Button
-                    //difference too great? set disabled
-                    disabled={true}
-                    variant='outline-primary'
-                    onClick={(e) => {
-                      return handleLocationSelection(e, 'AB654851');
-                    }}>
-                    <FontAwesomeIcon icon={faBoxCheck} />
-                  </Button>
-                </td>
-              </tr>
-              <tr>
-                <td>AH848888</td>
-                <td>75</td>
-                <td>0</td>
-                <td>
-                  <Button
-                    variant='outline-primary'
-                    onClick={(e) => {
-                      return handleLocationSelection(e, 'AH848888');
-                    }}>
-                    <FontAwesomeIcon icon={faBoxCheck} />
-                  </Button>
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </Modal.Body>
-      </Modal>
-
-      <Modal
-        size='lg'
-        show={formState.sourceLpSearch}
-        onHide={() => {
-          setFormState({ ...formState, sourceLpSearch: false });
+          dispatch({ type: 'HIDE_LP_MODAL' });
         }}
         centered>
         <Modal.Header closeButton>
