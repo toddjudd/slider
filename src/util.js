@@ -7,6 +7,13 @@ export function loadPickDetails() {
   });
 }
 
+export function getValidPickLocations() {
+  //use taskid in get request
+  return axios.get('http://localhost:7900/locations').catch((err) => {
+    console.log(err);
+  });
+}
+
 export function capitalize(s) {
   if (typeof s !== 'string') return '';
   return s.charAt(0).toUpperCase() + s.slice(1);

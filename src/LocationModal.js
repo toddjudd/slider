@@ -1,7 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBoxCheck } from '@fortawesome/pro-regular-svg-icons';
+import { useEffect, useState } from 'react';
 import { Button, Modal, Table } from 'react-bootstrap';
+import { faBoxCheck } from '@fortawesome/pro-regular-svg-icons';
+import classNames from 'classnames';
 import { usePickState } from './pick-state';
+import { getValidPickLocations } from './util';
 
 const LocationModal = () => {
   const [pick, dispatch] = usePickState();
@@ -11,6 +14,20 @@ const LocationModal = () => {
       change: { actualSourceLocation, showLocSearch: false },
     });
   };
+
+  const [locations, setLocations] = useState([]);
+
+  useEffect(() => {
+    let current = true;
+    getValidPickLocations(pick.taskId).then(({ data: locations }) => {
+      if (current) {
+        setLocations(locations);
+      }
+    });
+    return () => {
+      current = false;
+    };
+  }, [pick.taskId]);
 
   return (
     <Modal
@@ -29,8 +46,9 @@ const LocationModal = () => {
           <thead>
             <tr>
               <th>Location</th>
-              <th>Avaliable</th>
+              <th>Total</th>
               <th>Allocated</th>
+              <th>Avaliable</th>
               <th>
                 {/* <Button disabled variant='outline-secondary'>
                 Select <FontAwesomeIcon icon={faHandPointUp} />
@@ -40,54 +58,32 @@ const LocationModal = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>AH631303</td>
-              <td>106</td>
-              <td>106</td>
-              <td>
-                <Button
-                  variant='outline-primary'
-                  onClick={(e) => {
-                    return handleSelection(e, 'AH631303');
-                  }}>
-                  <FontAwesomeIcon icon={faBoxCheck} />
-                </Button>
-              </td>
-            </tr>
-            <tr>
-              <td>AB654851</td>
-              <td>68</td>
-              <td
-                //difference too great? set class to show red
-                style={{ color: 'var(--red)' }}>
-                68
-              </td>
-              <td>
-                <Button
-                  //difference too great? set disabled
-                  disabled={true}
-                  variant='outline-primary'
-                  onClick={(e) => {
-                    return handleSelection(e, 'AB654851');
-                  }}>
-                  <FontAwesomeIcon icon={faBoxCheck} />
-                </Button>
-              </td>
-            </tr>
-            <tr>
-              <td>AH848888</td>
-              <td>75</td>
-              <td>0</td>
-              <td>
-                <Button
-                  variant='outline-primary'
-                  onClick={(e) => {
-                    return handleSelection(e, 'AH848888');
-                  }}>
-                  <FontAwesomeIcon icon={faBoxCheck} />
-                </Button>
-              </td>
-            </tr>
+            {/* isExpectedSource: true, */}
+            {locations.map((location) => {
+              const notSelectable =
+                !location.isExpectedSource && location.avaliableQuantity <= 0;
+              return (
+                <tr
+                  className={classNames({
+                    notSelectable,
+                  })}>
+                  <td>{location.name}</td>
+                  <td>{location.quantity}</td>
+                  <td>{location.allocatedQuantity}</td>
+                  <td>{location.avaliableQuantity}</td>
+                  <td>
+                    <Button
+                      disabled={notSelectable}
+                      variant='outline-primary'
+                      onClick={(e) => {
+                        return handleSelection(e, location.name);
+                      }}>
+                      <FontAwesomeIcon icon={faBoxCheck} />
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
       </Modal.Body>
