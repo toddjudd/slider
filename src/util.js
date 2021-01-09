@@ -1,17 +1,37 @@
 import axios from 'axios';
 
-export function loadPickDetails() {
+export function loadPickDetails(taskId) {
   //use taskid in get request
-  return axios.get('http://localhost:7900/picks').catch((err) => {
+  return axios.get('http://localhost:7900/pick').catch((err) => {
     console.log(err);
   });
 }
 
-export function getValidPickLocations() {
+export function getValidPickLocations(taskId) {
   //use taskid in get request
   return axios.get('http://localhost:7900/locations').catch((err) => {
     console.log(err);
   });
+}
+
+export function getValidPickLicensePlates(taskId, sourceLoc) {
+  //use taskid in get request
+  return axios.get('http://localhost:7900/licensePlate').catch((err) => {
+    console.log(err);
+  });
+}
+
+export function validateActualLocationAndLicensePlate(
+  taskId,
+  sourceLoc,
+  sourceLp
+) {
+  //use taskid in get request
+  return axios
+    .get('http://localhost:7900/licensePlate/validate')
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 export function capitalize(s) {

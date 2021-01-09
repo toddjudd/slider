@@ -1,20 +1,17 @@
 //package import
 // import { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faBoxCheck } from '@fortawesome/pro-regular-svg-icons';
-import {
-  Button,
-  InputGroup,
-  FormControl,
-  Form,
-  Modal,
-  Table,
-} from 'react-bootstrap';
+import { faSearch } from '@fortawesome/pro-regular-svg-icons';
+import { Button, InputGroup, FormControl, Form } from 'react-bootstrap';
 
-import { capitalize, trueIfNull } from './util';
+import {
+  capitalize,
+  trueIfNull,
+  validateActualLocationAndLicensePlate,
+} from './util';
 //effects
 import { usePickState } from './pick-state';
-import useGetPicks from './useGetPicks';
+import { useGetPicks, useValidateLp } from './useAPI';
 //components
 import LocationModal from './LocationModal';
 import PickMaterial from './PickMaterial';
@@ -22,9 +19,13 @@ import PickDetails from './PickDetails';
 import PickNav from './PickNav';
 //css import
 import './pick.less';
+import LicensePlateModal from './LicensePlateModal';
+import { useEffect } from 'react';
 
 //pick.js
 // let taskState = null;
+
+const masterTaskId = 0;
 const Pick = () => {
   const [pick, dispatch] = usePickState();
 
@@ -32,7 +33,9 @@ const Pick = () => {
   // taskState = pick;
   // });
 
-  useGetPicks();
+  useGetPicks(masterTaskId);
+
+  useValidateLp();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -47,16 +50,6 @@ const Pick = () => {
     });
   }; //this might be able to be used for the handle location selection?
 
-  const handleLPSelection = (e, actualSourceLP) => {
-    // validateLp(actualSourceLP);
-    // need to make sure validation of the lp takes place on form change
-    //should validation happen only once??
-    dispatch({
-      type: 'FORM_CHANGE',
-      change: { actualSourceLP, showLpSearch: false },
-    });
-  };
-
   // const validateLp = (lp) => {
   //   //do something then set formState validation
   //   return setFormState({ ...formState, sourceLp: /^LP.+/.test(lp) });
@@ -64,8 +57,11 @@ const Pick = () => {
 
   return (
     <div className='Pick'>
-      <PickNav />
+      <PickNav pick={pick} />
       <PickMaterial pick={pick} />
+      <PickDetails pick={pick} />
+      <LocationModal />
+      <LicensePlateModal />
       <div className='PickForm'>
         <Form
           noValidate
@@ -161,77 +157,6 @@ const Pick = () => {
           </Button>
         </Form>
       </div>
-      <PickDetails pick={pick} />
-      <LocationModal />
-      <Modal
-        size='lg'
-        show={pick.showLpSearch}
-        onHide={() => {
-          dispatch({ type: 'HIDE_LP_MODAL' });
-        }}
-        centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Search Avaliable License Plates</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {/* data needs to be loaded */}
-          <Table striped bordered hover size='sm'>
-            <thead>
-              <tr>
-                <th>License Plate</th>
-                <th>Quantity</th>
-                <th>
-                  {/* <Button disabled variant='outline-secondary'>
-                    Select <FontAwesomeIcon icon={faHandPointUp} />
-                  </Button> */}
-                  Select
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>LP#12345</td>
-                <td>106</td>
-                <td>
-                  <Button
-                    variant='outline-primary'
-                    onClick={(e) => {
-                      return handleLPSelection(e, 'LP#12345');
-                    }}>
-                    <FontAwesomeIcon icon={faBoxCheck} />
-                  </Button>
-                </td>
-              </tr>
-              <tr>
-                <td>LP#1345899</td>
-                <td>68</td>
-                <td>
-                  <Button
-                    variant='outline-primary'
-                    onClick={(e) => {
-                      return handleLPSelection(e, 'LP#1345899');
-                    }}>
-                    <FontAwesomeIcon icon={faBoxCheck} />
-                  </Button>
-                </td>
-              </tr>
-              <tr>
-                <td>LP#987654</td>
-                <td>75</td>
-                <td>
-                  <Button
-                    variant='outline-primary'
-                    onClick={(e) => {
-                      return handleLPSelection(e, 'LP#987654');
-                    }}>
-                    <FontAwesomeIcon icon={faBoxCheck} />
-                  </Button>
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </Modal.Body>
-      </Modal>
     </div>
   );
 };

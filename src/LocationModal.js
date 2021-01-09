@@ -4,6 +4,7 @@ import { Button, Modal, Table } from 'react-bootstrap';
 import { faBoxCheck } from '@fortawesome/pro-regular-svg-icons';
 import classNames from 'classnames';
 import { usePickState } from './pick-state';
+import { useGetLocations } from './useAPI';
 import { getValidPickLocations } from './util';
 
 const LocationModal = () => {
@@ -17,17 +18,7 @@ const LocationModal = () => {
 
   const [locations, setLocations] = useState([]);
 
-  useEffect(() => {
-    let current = true;
-    getValidPickLocations(pick.taskId).then(({ data: locations }) => {
-      if (current) {
-        setLocations(locations);
-      }
-    });
-    return () => {
-      current = false;
-    };
-  }, [pick.taskId]);
+  useGetLocations(pick.taskId, setLocations);
 
   return (
     <Modal
@@ -59,11 +50,12 @@ const LocationModal = () => {
           </thead>
           <tbody>
             {/* isExpectedSource: true, */}
-            {locations.map((location) => {
+            {locations.map((location, i) => {
               const notSelectable =
                 !location.isExpectedSource && location.avaliableQuantity <= 0;
               return (
                 <tr
+                  key={i}
                   className={classNames({
                     notSelectable,
                   })}>

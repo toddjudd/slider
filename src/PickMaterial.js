@@ -9,12 +9,14 @@ const PickMaterial = (props) => {
       <h1 className='material-label'>
         Material:
         <OverlayTrigger
-          overlay={(props) =>
-            MaterialDescription({
-              title: 'Descrtiption',
-              content: pick.materialDescription,
-              props,
-            })
+          overlay={
+            // (x) => {
+            //   console.log(x);
+            // }
+            <MaterialDescription
+              title='Descrtiption'
+              content={pick.materialDescription}
+            />
           }
           placement='right'>
           <Badge

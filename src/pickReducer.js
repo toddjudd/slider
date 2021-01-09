@@ -19,7 +19,14 @@ const pickStateRecuder = (state, action) => {
     case 'HIDE_LP_MODAL':
       return { ...state, showLpSearch: false };
     case 'RESET':
-      return { ...state, submitting: false, fromIsValid: null };
+      return {
+        ...state,
+        submitting: false,
+        fromIsValid: null,
+        actualQuantity: state.expectedQuantity,
+        actualSourceLocation: state.expectedSourceLocation,
+        actualSourceLP: '',
+      };
     case 'FORM_SUBMIT': {
       // validateForm()
       let vallidation = { fromIsValid: true, submitting: true };
