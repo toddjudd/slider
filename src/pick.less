@@ -1,12 +1,12 @@
-.Pick {
+.Pick > form {
   background-color: white;
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-template-areas:
-    'action action'
+    // ' action action'
     'material detail'
     'form detail'
-    'form .';
+    'form action';
   border-radius: 12px;
 
   margin: 8px;
@@ -18,7 +18,14 @@
   grid-area: action;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
+  flex-wrap: wrap;
+  .flexBreak {
+    flex-basis: 100%;
+  }
+  button {
+    margin: 12px 12px 0 12px;
+  }
 }
 .PickMaterial {
   grid-area: material;

@@ -4,11 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/pro-regular-svg-icons';
 import { Button, InputGroup, FormControl, Form } from 'react-bootstrap';
 
-import {
-  capitalize,
-  trueIfNull,
-  validateActualLocationAndLicensePlate,
-} from './util';
+import { capitalize, trueIfNull } from './util';
 //effects
 import { usePickState } from './pick-state';
 import { useGetPicks, useValidateLp } from './useAPI';
@@ -20,8 +16,6 @@ import PickNav from './PickNav';
 //css import
 import './pick.less';
 import LicensePlateModal from './LicensePlateModal';
-import { useEffect } from 'react';
-
 //pick.js
 // let taskState = null;
 
@@ -38,6 +32,7 @@ const Pick = () => {
   useValidateLp();
 
   const handleSubmit = (e) => {
+    console.log(e);
     e.preventDefault();
     e.stopPropagation();
     dispatch({ type: 'FORM_SUBMIT', form: e.currentTarget });
@@ -57,17 +52,17 @@ const Pick = () => {
 
   return (
     <div className='Pick'>
-      <PickNav pick={pick} />
-      <PickMaterial pick={pick} />
-      <PickDetails pick={pick} />
-      <LocationModal />
-      <LicensePlateModal />
-      <div className='PickForm'>
-        <Form
-          noValidate
-          validated={pick.fromIsValid}
-          onSubmit={handleSubmit}
-          autoComplete='off'>
+      <Form
+        noValidate
+        validated={pick.fromIsValid}
+        onSubmit={handleSubmit}
+        autoComplete='off'>
+        <PickNav pick={pick} />
+        <PickMaterial pick={pick} />
+        <PickDetails pick={pick} />
+        <LocationModal />
+        <LicensePlateModal />
+        <div className='PickForm'>
           <Form.Group>
             <Form.Label>Source Loc</Form.Label>
             <InputGroup>
@@ -149,14 +144,8 @@ const Pick = () => {
               </InputGroup.Append>
             </InputGroup>
           </Form.Group>
-          <Button
-            type='submit'
-            variant={pick.submitting ? 'secondary' : 'success'}
-            disabled={pick.submitting}>
-            {pick.submitting ? 'Loading...' : 'Submit'}
-          </Button>
-        </Form>
-      </div>
+        </div>
+      </Form>
     </div>
   );
 };

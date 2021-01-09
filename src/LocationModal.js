@@ -1,11 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button, Modal, Table } from 'react-bootstrap';
 import { faBoxCheck } from '@fortawesome/pro-regular-svg-icons';
 import classNames from 'classnames';
 import { usePickState } from './pick-state';
 import { useGetLocations } from './useAPI';
-import { getValidPickLocations } from './util';
 
 const LocationModal = () => {
   const [pick, dispatch] = usePickState();
