@@ -4,10 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/pro-regular-svg-icons';
 import { Button, InputGroup, FormControl, Form } from 'react-bootstrap';
 
-import { capitalize, trueIfNull } from './util';
 //effects
 import { usePickState } from './pick-state';
-import { useGetPicks, useValidateLp } from './useAPI';
+import { capitalize, trueIfNull, useGetPick, useValidateLp } from '../../util';
 //components
 import LocationModal from './LocationModal';
 import PickMaterial from './PickMaterial';
@@ -27,7 +26,7 @@ const Pick = () => {
   // taskState = pick;
   // });
 
-  useGetPicks(masterTaskId);
+  useGetPick(masterTaskId);
 
   useValidateLp();
 

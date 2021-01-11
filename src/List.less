@@ -1,0 +1,76 @@
+.List {
+  display: grid;
+  grid-template-areas:
+    'actions filter'
+    'items  filter';
+  grid-template-columns: 1fr auto;
+}
+
+.Actions {
+  user-select: none;
+  grid-area: actions;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  background-color: #999;
+  font-size: 0.8em;
+  align-items: center;
+  padding: 6px;
+  .form-group {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    .form-label {
+      color: #333;
+      white-space: nowrap;
+      margin: 0 6px;
+    }
+    .custom-select {
+      font-size: inherit;
+    }
+  }
+  .form-group,
+  button,
+  option {
+    margin: 0 6px;
+    font-size: inherit;
+    font-size: 0.9em;
+  }
+  span {
+    flex: 1;
+  }
+}
+
+.Items {
+  grid-area: items;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  .Item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 6px;
+    margin: 12px 12px 0 12px;
+    align-items: stretch;
+    button {
+      margin: 0 6px;
+    }
+    .ItemSelector {
+      padding: 12px;
+    }
+    .ItemDetail {
+      flex: 1;
+      .title {
+        color: #999;
+        font-size: 0.95em;
+      }
+    }
+  }
+
+  .Filter {
+    grid-area: filter;
+  }
+}

@@ -1,10 +1,6 @@
 import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faArrowToLeft,
-  faArrowToRight,
-  faCheck,
-} from '@fortawesome/pro-regular-svg-icons';
+import { faArrowToRight, faCheck } from '@fortawesome/pro-regular-svg-icons';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 const PickNav = (props) => {
   const { pick } = props;

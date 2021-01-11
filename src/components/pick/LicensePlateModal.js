@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button, Modal, Table } from 'react-bootstrap';
 import { faBoxCheck } from '@fortawesome/pro-regular-svg-icons';
 import { usePickState } from './pick-state';
-import { useGetLp } from './useAPI';
+import { useGetLp } from '../../util';
 
 const LicensePlateModal = () => {
   const [pick, dispatch] = usePickState();

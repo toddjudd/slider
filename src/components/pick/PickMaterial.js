@@ -1,6 +1,6 @@
 import { Badge, OverlayTrigger } from 'react-bootstrap';
 import MaterialDescription from './MaterialDescription';
-import { capitalize } from './util';
+import { capitalize } from '../../util';
 
 const PickMaterial = (props) => {
   const { pick } = props;

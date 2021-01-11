@@ -4,7 +4,7 @@ import { Button, Modal, Table } from 'react-bootstrap';
 import { faBoxCheck } from '@fortawesome/pro-regular-svg-icons';
 import classNames from 'classnames';
 import { usePickState } from './pick-state';
-import { useGetLocations } from './useAPI';
+import { useGetLocations } from '../../util';
 
 const LocationModal = () => {
   const [pick, dispatch] = usePickState();
