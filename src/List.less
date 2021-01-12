@@ -2,8 +2,10 @@
   display: grid;
   grid-template-areas:
     'actions filter'
-    'items  filter';
+    'items filter';
   grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh; //temp for now!!!
 }
 
 .Actions {
@@ -46,7 +48,9 @@
   display: flex;
   flex-direction: column;
   justify-content: stretch;
+  background-color: #fafafa;
   .Item {
+    background-color: white;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -69,8 +73,13 @@
       }
     }
   }
+}
 
-  .Filter {
-    grid-area: filter;
+.Filter {
+  grid-area: filter;
+  border-left: #999 solid 1px;
+  padding: 16px;
+  button {
+    float: right;
   }
 }
