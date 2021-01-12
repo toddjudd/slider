@@ -84,20 +84,13 @@ const ListPage = () => {
           );
           picks = [...state.orgPicks].filter((pick) => {
             return filters.reduce((acc, filter, i) => {
-              // console.group(`filter reducer ${i}`);
               if (!acc) return false;
               let regex;
               try {
                 regex = new RegExp(filter.value, '');
               } catch {
-                return true;
+                regex = new RegExp('', '');
               }
-              // console.log(`regex: ${regex}`);
-              // console.log(`filter: ${filter.filter}`);
-              // console.log(`pickVal: ${pick[filter.filter]}`);
-              // console.log(regex.test(pick[filter.filter]));
-              // console.groupEnd(`filter reducer ${i}`);
-              // return true;
               return regex.test(pick[filter.filter]);
             }, true);
           });
@@ -171,7 +164,7 @@ const ListPage = () => {
             {[
               { title: 'Location', prop: 'expectedSourceLocation' },
               { title: 'Material', prop: 'materialLookup' },
-              { title: 'Wave', prop: 'waveId' },
+              { title: 'Wave', prop: 'waveId' }, //should be expected LP
             ].map((sort, i) => (
               <option key={i} value={sort.prop}>
                 {sort.title}
@@ -305,14 +298,12 @@ const ListPage = () => {
               <ItemDetail title='Quantity'>{pick.expectedQuantity}</ItemDetail>
               <ItemDetail title='Carrier'>{pick.carrier}</ItemDetail>
               <ItemDetail title='WaveId'>{pick.waveId}</ItemDetail>
+              {/* //should be expected LP or disable complte task if one can't be assumed!!!*/}
               <Button variant='success'>Complete Task</Button>
               <Button variant='primary'>Open Task</Button>
             </div>
           );
         })}
-        <pre>{JSON.stringify({ picks: listState.picks }, null, 2)}</pre>
-        <pre>{JSON.stringify({ orgPicks: listState.orgPicks }, null, 2)}</pre>
-        <pre>{JSON.stringify({ filters: listState.filters }, null, 2)}</pre>
       </div>
     </div>
   );
