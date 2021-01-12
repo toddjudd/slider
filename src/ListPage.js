@@ -33,7 +33,7 @@ const ListPage = () => {
             ...state,
             orgPicks: picks,
             picks: picks.sort((a, b) => {
-              console.log(a[state.sortBy]);
+              // console.log(a[state.sortBy]);
               return a[state.sortBy] < b[state.sortBy] ? -1 : 1;
             }),
           };
@@ -245,7 +245,7 @@ const ListPage = () => {
                 <InputGroup.Text>/</InputGroup.Text>
               </InputGroup.Append>
             </InputGroup>
-            {/* <Form.Text className='text-muted'>This is a Rgex Field</Form.Text> */}
+            {/* //should be expected LP or disable complte task if one can't be assumed!!!*/}
           </Form.Group>{' '}
           <Form.Group controlId='filterProject'>
             <Form.Label>Project: </Form.Label>
@@ -268,8 +268,8 @@ const ListPage = () => {
                 <InputGroup.Text>/</InputGroup.Text>
               </InputGroup.Append>
             </InputGroup>
-            {/* <Form.Text className='text-muted'>This is a Rgex Field</Form.Text> */}
           </Form.Group>
+          {/* REGEX HELPER TEXT!! ADD SOMETHING FROM REGEXER???  */}
         </div>
       )}
       <div className='Items'>
@@ -287,7 +287,6 @@ const ListPage = () => {
                   custom
                   id={`${pick.taskId}`}
                   checked={pick.selected}
-                  taskId={pick.taskId}
                   onChange={selectPick}
                 />
               </div>
