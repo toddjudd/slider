@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.less';
-import ListPage from './ListPage';
-// import { Button, Form } from 'react-bootstrap';
+import Login from './Login';
 // import Pick from './components/pick/Pick';
 // import pickReducer, { initialState } from './components/pick/pickReducer';
 // import { PickStateProvider } from './components/pick/pick-state';
@@ -13,7 +12,8 @@ const App = () => {
   // const [check, setCheck] = useState(true);
   return (
     <div className='App'>
-      <ListPage></ListPage>
+      <Login></Login>
+      {/* <ListPage></ListPage> */}
       {/* <Form.Check
         custom
         type='checkbox'
