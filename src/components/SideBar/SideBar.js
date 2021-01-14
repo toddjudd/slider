@@ -47,12 +47,13 @@ const SideBar = ({ children }) => {
           <FontAwesomeIcon icon={faCog} />
           </Link>
         </div> */}
+      <FontAwesomeIcon
+        icon={faSignOut}
+        onClick={handleLogout}
+        style={{ transform: 'rotate(180deg)' }}
+      />
       <div className='profile' onClick={handleLogout}>
-        <FontAwesomeIcon
-          icon={faSignOut}
-          style={{ transform: 'rotate(180deg)' }}
-        />
-        {/* <img src={auth.photoURL} loading='lazy' alt='' /> */}
+        <img src={auth.photoURL} loading='lazy' alt='' />
       </div>
       {/* 
       assign tasks
