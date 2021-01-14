@@ -2,6 +2,7 @@ const PickDetails = (props) => {
   const { pick } = props;
   return (
     <div className='PickDetails'>
+      <span>OWNER VENDOR REF</span>
       <div className='project'>
         <span className='title'>Project:</span> {pick.project}
       </div>

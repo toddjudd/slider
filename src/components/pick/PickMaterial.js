@@ -13,26 +13,19 @@ const PickMaterial = (props) => {
             // (x) => {
             //   console.log(x);
             // }
-            <MaterialDescription
-              title='Descrtiption'
-              content={pick.materialDescription}
-            />
+            <MaterialDescription title='Descrtiption' content={pick.materialDescription} />
           }
-          placement='right'>
-          <Badge
-            variant='primary'
-            className='material-detail'
-            delay={{ show: 250, hide: 300 }}>
+          placement='right'
+        >
+          <Badge variant='primary' className='material-detail' delay={{ show: 250, hide: 300 }}>
             {pick.materialLookup}
           </Badge>
         </OverlayTrigger>
       </h1>
       <h3 className='pick-quantity-label'>
-        Quantity:{' '}
-        <span className='pick-quantity-detail'>{pick.expectedQuantity}</span>
-        <Badge className='pick-unitOfMeasure-detail'>
-          {capitalize(pick.uom)}
-        </Badge>
+        Quantity: <span className='pick-quantity-detail'>{pick.expectedQuantity}</span>
+        <Badge className='pick-unitOfMeasure-detail'>{capitalize(pick.uom)}</Badge>
+        <span>## of Eaches</span>
       </h3>
     </div>
   );
