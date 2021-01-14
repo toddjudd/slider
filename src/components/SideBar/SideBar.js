@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faList, faBoxOpen } from '@fortawesome/pro-regular-svg-icons';
+import {
+  faSignOut,
+  faCog,
+  faList,
+  faBoxOpen,
+} from '@fortawesome/pro-regular-svg-icons';
 import { Link, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 
@@ -40,10 +45,14 @@ const SideBar = ({ children }) => {
       {/* <div className='settingsLink'>
         <Link to='settings'>
           <FontAwesomeIcon icon={faCog} />
-        </Link>
-      </div> */}
+          </Link>
+        </div> */}
       <div className='profile' onClick={handleLogout}>
-        <img src={auth.photoURL} loading='lazy' alt='' />
+        <FontAwesomeIcon
+          icon={faSignOut}
+          style={{ transform: 'rotate(180deg)' }}
+        />
+        {/* <img src={auth.photoURL} loading='lazy' alt='' /> */}
       </div>
       {/* 
       assign tasks

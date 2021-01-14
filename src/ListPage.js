@@ -104,7 +104,7 @@ const ListPage = () => {
       orgPicks: [],
       allSelected: false,
       sortBy: 'expectedSourceLocation',
-      openFilter: false,
+      openFilter: true,
       filters: [
         { filter: 'expectedSourceLocation', value: '' },
         { filter: 'materialLookup', value: '' },
@@ -296,7 +296,9 @@ const ListPage = () => {
               <ItemDetail title='Material'>{pick.materialLookup}</ItemDetail>
               <ItemDetail title='Quantity'>{pick.expectedQuantity}</ItemDetail>
               <ItemDetail title='Carrier'>{pick.carrier}</ItemDetail>
-              <ItemDetail title='WaveId'>{pick.waveId}</ItemDetail>
+              <ItemDetail title='LicensePlate'>
+                {pick.expectedSourceLicensePlate}
+              </ItemDetail>
               {/* //should be expected LP or disable complte task if one can't be assumed!!!*/}
               <Button variant='success'>Complete Task</Button>
               <Button variant='primary'>Open Task</Button>
