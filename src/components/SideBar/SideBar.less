@@ -1,0 +1,54 @@
+.SideBar {
+  background-color: var(--xred);
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 50px;
+  grid-area: sidebar;
+  user-select: none;
+  min-height: 100vh;
+  .divider {
+    width: 60px;
+    min-height: 1px;
+    background-color: var(--white);
+    margin: auto;
+  }
+
+  .actions {
+    padding: 0 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile {
+    margin: 12px 0;
+    img {
+      max-width: 60px;
+      height: auto;
+      border-radius: 100%;
+    }
+  }
+
+  .actions > * {
+    margin-bottom: 12px;
+  }
+
+  .settingsLink {
+    margin: 12px;
+  }
+}
+
+.SideBar a:hover {
+  color: var(--hoverWhiteLink);
+}
+
+.SideBar a:visited {
+  color: var(--white);
+}
+
+.SideBar a {
+  color: var(--white);
+}

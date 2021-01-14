@@ -6,11 +6,11 @@ import { faArrowToRight, faFilter } from '@fortawesome/pro-regular-svg-icons';
 import { loadPicks } from './util';
 
 //part of list.item.detail //List.js
-const ItemDetail = ({ title, content, children }) => {
+const ItemDetail = ({ title, detail, children }) => {
   return (
     <div className='ItemDetail'>
       <div className='title'>{title}</div>
-      <div className='content'>{content || children}</div>
+      <div className='detail'>{detail || children}</div>
     </div>
   );
 };

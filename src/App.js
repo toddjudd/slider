@@ -1,36 +1,26 @@
 import React from 'react';
 import './App.less';
+import { AuthStateProvider } from './auth-state';
+import authReducer, { initialState } from './authReducer';
+import useAuth from './useAuth';
 import Login from './Login';
-// import Pick from './components/pick/Pick';
-// import pickReducer, { initialState } from './components/pick/pickReducer';
-// import { PickStateProvider } from './components/pick/pick-state';
-//     <PickStateProvider reducer={pickReducer} initialState={initialState}>
-//       <Pick />
-//     </PickStateProvider>
+import LoggedIn from './LoggedIn';
+
+const Auth = () => {
+  //use app state return state,
+  const { authAttempted, auth } = useAuth();
+
+  //try to login from local storage, untill that's attempted show nothing/spinner
+  if (!authAttempted) return null;
+
+  return auth ? <LoggedIn /> : <Login />;
+};
 
 const App = () => {
-  // const [check, setCheck] = useState(true);
   return (
-    <div className='App'>
-      <Login></Login>
-      {/* <ListPage></ListPage> */}
-      {/* <Form.Check
-        custom
-        type='checkbox'
-        id={`custom-checkbox`}
-        label={`Check this custom checkbox`}
-        checked={check}
-        onClick={(e) => {
-          setCheck(!check);
-        }}
-      />
-      <Button
-        onClick={(e) => {
-          setCheck(!check);
-        }}>
-        check
-      </Button> */}
-    </div>
+    <AuthStateProvider reducer={authReducer} initialState={initialState}>
+      <Auth></Auth>
+    </AuthStateProvider>
   );
 };
 

@@ -1,0 +1,21 @@
+:root {
+  --xred: #d2232b;
+  --white: #ffffff;
+  --hoverWhiteLink: #aaa;
+}
+
+.layout {
+  display: grid;
+  grid-template-areas:
+    'sidebar topbar'
+    'sidebar content';
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+.content {
+  grid-area: content;
+  background-color: #eee;
+}

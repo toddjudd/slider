@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { usePickState } from './components/pick/pick-state';
 
 export function loadPicks(userId) {
