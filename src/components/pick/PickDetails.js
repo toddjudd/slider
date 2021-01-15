@@ -2,7 +2,6 @@ const PickDetails = (props) => {
   const { pick } = props;
   return (
     <div className='PickDetails'>
-      <span>OWNER VENDOR REF</span>
       <div className='project'>
         <span className='title'>Project:</span> {pick.project}
       </div>
@@ -25,6 +24,12 @@ const PickDetails = (props) => {
       </div>
       <div className='orderId'>
         <span className='title'>Order #:</span> {pick.orderId}
+      </div>
+      <div className='ownerReference'>
+        <span className='title'>Owner Reference:</span> {pick.ownerReference}
+      </div>
+      <div className='vendorReference'>
+        <span className='title'>Vendor Reference:</span> {pick.vendorReference}
       </div>
     </div>
   );

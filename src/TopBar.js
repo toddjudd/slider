@@ -1,16 +1,37 @@
-import { Button } from 'react-bootstrap';
+import { Button, Form, InputGroup } from 'react-bootstrap';
+import { useHistory, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowToLeft } from '@fortawesome/pro-regular-svg-icons';
+import { faArrowToLeft, faSearch } from '@fortawesome/pro-regular-svg-icons';
 import './TopBar.less';
 
 const TopBar = () => {
+  const history = useHistory();
+  const location = useLocation();
+
+  const handleGoBack = (e) => {
+    history.goBack();
+  };
+
   return (
     <div className='TopBar'>
-      <Button variant='light'>
-        <FontAwesomeIcon icon={faArrowToLeft} /> Back to List
-      </Button>
-      <h1>Picking</h1>
-      <h3>search?</h3>
+      {location.pathname !== '/' ? (
+        <Button variant='dark' onClick={handleGoBack}>
+          <FontAwesomeIcon icon={faArrowToLeft} /> Back
+        </Button>
+      ) : (
+        <span></span>
+      )}
+      <h1>Assigned Picks</h1>
+      <Form.Group>
+        <InputGroup>
+          <Form.Control type='text' placeholder='Search'></Form.Control>
+          <InputGroup.Append>
+            <Button>
+              <FontAwesomeIcon icon={faSearch} />
+            </Button>
+          </InputGroup.Append>
+        </InputGroup>
+      </Form.Group>
     </div>
   );
 };

@@ -1,9 +1,15 @@
-import { Form, Button, Badge, InputGroup } from 'react-bootstrap';
+import { ButtonGroup, Form, Button, Badge, InputGroup } from 'react-bootstrap';
 import { useEffect, useReducer } from 'react';
 import './List.less';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowToRight, faFilter } from '@fortawesome/pro-regular-svg-icons';
+import {
+  faSortAlphaDown,
+  faSortAlphaUpAlt,
+} from '@fortawesome/free-solid-svg-icons';
 import { loadPicks } from './util';
+import { useHistory } from 'react-router-dom';
+import { useAuthState } from './auth-state';
 
 //part of list.item.detail //List.js
 const ItemDetail = ({ title, detail, children }) => {
@@ -16,7 +22,8 @@ const ItemDetail = ({ title, detail, children }) => {
 };
 
 const ListPage = () => {
-  let userId = 0;
+  const { pin } = useAuthState();
+  const history = useHistory();
 
   const [listState, dispatch] = useReducer(
     (state, action) => {
@@ -66,13 +73,33 @@ const ListPage = () => {
         case 'SORT':
           picks = [...state.picks].sort((a, b) => {
             console.log(a[action.sortBy]);
-            return a[action.sortBy] < b[action.sortBy] ? -1 : 1;
+            if (state.sortAsc) {
+              return a[action.sortBy] < b[action.sortBy] ? -1 : 1;
+            } else {
+              return a[action.sortBy] > b[action.sortBy] ? -1 : 1;
+            }
+            // if (!state.sortAsc) {
+            //   return a[action.sortBy] < b[action.sortBy] ? -1 : 1;
+            // } else {
+            //   return a[action.sortBy] > b[action.sortBy] ? -1 : 1;
+            // }
           });
           return {
             ...state,
             picks,
             sortby: action.sortBy,
           };
+        case 'TOGGLE_SORT':
+          console.log('tog sort');
+          picks = [...state.picks].sort((a, b) => {
+            console.log(a[state.sortBy]);
+            if (!state.sortAsc) {
+              return a[state.sortBy] < b[state.sortBy] ? -1 : 1;
+            } else {
+              return a[state.sortBy] > b[state.sortBy] ? -1 : 1;
+            }
+          });
+          return { ...state, sortAsc: !state.sortAsc, picks };
         case 'TOGGLE_FILTER':
           return { ...state, openFilter: !state.openFilter };
         case 'SET_FILTER':
@@ -104,6 +131,7 @@ const ListPage = () => {
       orgPicks: [],
       allSelected: false,
       sortBy: 'expectedSourceLocation',
+      sortAsc: true,
       openFilter: true,
       filters: [
         { filter: 'expectedSourceLocation', value: '' },
@@ -118,13 +146,13 @@ const ListPage = () => {
     let cleanup = () => {
       current = false;
     };
-    loadPicks(userId).then(({ data: picks }) => {
+    loadPicks(pin).then(({ data: picks }) => {
       if (current) {
         dispatch({ type: 'LOAD_PICKS', picks });
       }
     });
     return cleanup;
-  }, [userId]);
+  }, [pin]);
 
   const selectAll = () => {
     dispatch({ type: 'SLECECT_ALL' });
@@ -139,6 +167,10 @@ const ListPage = () => {
     (acc, cur) => (cur.selected ? acc + 1 : acc),
     0
   );
+
+  let handleNavigate = (taskId) => {
+    history.push(`/pick/${taskId}`);
+  };
 
   return (
     <div className='List'>
@@ -164,7 +196,7 @@ const ListPage = () => {
             {[
               { title: 'Location', prop: 'expectedSourceLocation' },
               { title: 'Material', prop: 'materialLookup' },
-              { title: 'Wave', prop: 'waveId' }, //should be expected LP
+              { title: 'License Plate', prop: 'expectedSourceLicensePlate' }, //should be expected LP
             ].map((sort, i) => (
               <option key={i} value={sort.prop}>
                 {sort.title}
@@ -172,6 +204,17 @@ const ListPage = () => {
             ))}
           </Form.Control>
         </Form.Group>
+        <Button
+          variant='light'
+          onClick={(e) => {
+            dispatch({ type: 'TOGGLE_SORT' });
+          }}>
+          {listState.sortAsc ? (
+            <FontAwesomeIcon icon={faSortAlphaDown} />
+          ) : (
+            <FontAwesomeIcon icon={faSortAlphaUpAlt} />
+          )}
+        </Button>
         <Button variant='success'>
           Complete Selected <Badge variant='light'>{selectedCount}</Badge>
         </Button>
@@ -275,7 +318,8 @@ const ListPage = () => {
       <div className='Items'>
         {listState.picks.map((pick, i) => {
           return (
-            <div className='Item' key={pick.taskId}>
+            <div className='Item' key={i}>
+              {/* <div className='Item' key={pick.taskId}> */}
               <div
                 className='ItemSelector'
                 onClick={(e) => {
@@ -300,8 +344,20 @@ const ListPage = () => {
                 {pick.expectedSourceLicensePlate}
               </ItemDetail>
               {/* //should be expected LP or disable complte task if one can't be assumed!!!*/}
-              <Button variant='success'>Complete Task</Button>
-              <Button variant='primary'>Open Task</Button>
+              <ButtonGroup aria-label='Basic example'>
+                <Button
+                  variant='success'
+                  disabled={!pick.expectedSourceLicensePlate}>
+                  Complete Task
+                </Button>
+                <Button
+                  variant='primary'
+                  onClick={(e) => {
+                    handleNavigate(pick.taskId);
+                  }}>
+                  Open Task
+                </Button>
+              </ButtonGroup>
             </div>
           );
         })}

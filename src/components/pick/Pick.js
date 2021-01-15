@@ -3,6 +3,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/pro-regular-svg-icons';
 import { Button, InputGroup, FormControl, Form } from 'react-bootstrap';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 
 //effects
 import { usePickState } from './pick-state';
@@ -18,15 +19,12 @@ import LicensePlateModal from './LicensePlateModal';
 //pick.js
 // let taskState = null;
 
-const masterTaskId = 0;
 const Pick = () => {
   const [pick, dispatch] = usePickState();
 
-  // useEffect(() => {
-  // taskState = pick;
-  // });
+  const { taskId } = useParams();
 
-  useGetPick(masterTaskId);
+  useGetPick(taskId);
 
   useValidateLp();
 
@@ -71,6 +69,7 @@ const Pick = () => {
                 id='sourceLoc'
                 placeholder='Source Loc'
                 aria-label='Source Location'
+                disabled='true'
                 isInvalid={trueIfNull(pick.actualSourceLocationisValid)}
                 value={pick.actualSourceLocation}
                 onChange={(e) => {

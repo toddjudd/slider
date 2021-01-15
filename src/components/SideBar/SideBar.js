@@ -39,7 +39,7 @@ const SideBar = ({ children }) => {
   return (
     <div className='SideBar' style={{ minWidth: expand ? '300px' : '80px' }}>
       {/* <Link to='http://xship.com'> */}
-      <img src='./xlogo.svg' alt='' className='xLogo' />
+      <img src='http://localhost:3000/xlogo.svg' alt='' className='xLogo' />
       <div className='divider'></div>
       <div className='actions'>{children}</div>
       {/* <div className='settingsLink'>

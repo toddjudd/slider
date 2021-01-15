@@ -11,7 +11,11 @@ const LocationModal = () => {
   const handleSelection = (e, actualSourceLocation) => {
     dispatch({
       type: 'FORM_CHANGE',
-      change: { actualSourceLocation, showLocSearch: false },
+      change: {
+        actualSourceLocation,
+        actualSourceLP: pick.expectedSourceLicensePlate,
+        showLocSearch: false,
+      },
     });
   };
 

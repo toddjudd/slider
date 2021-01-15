@@ -6,7 +6,7 @@ const pickStateRecuder = (state, action) => {
         ...action.task,
         actualQuantity: action.task.expectedQuantity,
         actualSourceLocation: action.task.expectedSourceLocation,
-        actualSourceLP: '',
+        actualSourceLP: '', //action.task.expectedSourceLicensePlate,
       };
     case 'FORM_CHANGE':
       return { ...state, ...action.change };
@@ -25,7 +25,7 @@ const pickStateRecuder = (state, action) => {
         fromIsValid: null,
         actualQuantity: state.expectedQuantity,
         actualSourceLocation: state.expectedSourceLocation,
-        actualSourceLP: '',
+        actualSourceLP: '', //state.expectedSourceLicensePlate,
       };
     case 'FORM_SUBMIT': {
       // validateForm()
